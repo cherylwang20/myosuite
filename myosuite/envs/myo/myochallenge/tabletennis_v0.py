@@ -155,7 +155,7 @@ class TableTennisEnvV0(BaseV0):
             ('act_reg', -1.*act_mag),
             ('sparse', paddle_touch[0] == 1), #paddle_touching
             ('solved', np.array([[solved]])),
-            ('done', np.array([[self._get_done(ball_pos[-1], solved)]])),
+            ('done', False),
         ))
 
         rwd_dict['dense'] = sum(float(wt) * float(np.array(rwd_dict[key]).squeeze())
@@ -256,7 +256,7 @@ class TableTennisEnvV0(BaseV0):
         num_success = 0
         num_paths = len(paths)
 
-        # average sucess over entire env horizon
+        # average success over entire env horizon
         for path in paths:
             # record success if solved for provided successful_steps
             if np.sum(path['env_infos']['rwd_dict']['solved'] * 1.0) >= successful_steps:
