@@ -155,7 +155,7 @@ class TableTennisEnvV0(BaseV0):
             ('act_reg', -1.*act_mag),
             ('sparse', paddle_touch[0] == 1), #paddle_touching
             ('solved', np.array([[solved]])),
-            ('done', False),
+            ('done', np.array([[self._get_done(ball_pos[-1], solved)]])),
         ))
 
         rwd_dict['dense'] = sum(float(wt) * float(np.array(rwd_dict[key]).squeeze())
@@ -222,8 +222,8 @@ class TableTennisEnvV0(BaseV0):
         elif z < 0.3:
             self.obs_dict['time'] = MAX_TIME
             return 1
-        elif solved:
-            return 1
+        #elif solved:
+            #return 1
         elif evaluate_pingpong_trajectory(self.contact_trajectory) in [0, 2, 3]:
             return 1
         return 0
